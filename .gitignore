@@ -1,2 +1,4 @@
 demoapp/__pycache__/*
 tasks/__pycahce__/*
+tasks/migrations/__pycache__/*
+logs/*
