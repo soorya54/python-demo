@@ -7,6 +7,9 @@ class PriorityMaster(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 	updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
+	def __str__(self):
+		return self.priority
+
 class TaskStateMaster(models.Model):
 	state = models.CharField(max_length=50)
 	active_flag = models.SmallIntegerField(default=1)

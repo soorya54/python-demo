@@ -1,14 +1,12 @@
-<!-- templates/home.html -->
+<!-- templates/list.html -->
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}List{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">logout</a></p>
-  <p><a href="{% url 'list' %}">List</a></p>
-  <p><a href="{% url 'create' %}">Create</a></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a>
