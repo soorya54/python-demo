@@ -4,9 +4,9 @@ from . import views
 
 urlpatterns = [
     path('sample', views.sample_job, name='sample_job'),
-    path('list', views.list, name='list'),
+    path('', views.list, name='list'),
     path('create', views.create, name='create'),
     path('store', views.store, name='store'),
-    url(r'^$', views.index, name='index'),
+    # url(r'^$', views.index, name='index'),
     url(r'^(?P<room_name>[^/]+)/$', views.room, name='room'),
 ]

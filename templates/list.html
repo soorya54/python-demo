@@ -5,8 +5,42 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">logout</a></p>
+  <nav class="navbar navbar-expand-sm bg-light">
+
+	  <!-- Links -->
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'create' %}">Create Task</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+			</li>
+		</ul>
+
+	</nav>
+  Hi {{ user.username }}!	
+	<ul class="list-group">
+		<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+			<div class="flex-column">
+				Don Quixote 
+				<p><small>by Miguel de Cervantes</small></p>
+				<span class="badge badge-info badge-pill"> 2 Copies in Stock</span>
+			</div>
+			<div class="image-parent">
+				<img src="..." class="img-fluid" alt="quixote">
+			</div>
+		</a>
+		<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+			<div class="flex-column">
+				As I Lay Dying 
+				<p><small>by William Faulkner</small></p>
+				<span class="badge badge-primary badge-pill"> 5 Copies in Stock</span>
+			</div>
+			<div class="image-parent">
+				<img src="..." class="img-fluid" alt="lay">
+			</div>
+		</a>
+	</ul>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a>
