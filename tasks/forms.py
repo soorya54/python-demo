@@ -2,12 +2,6 @@ from django.forms import ModelForm
 from .models import Tasks
 from django import forms
 
-PRIORITY_CHOICES= [
-    ('1', 'Low'),
-    ('2', 'Medium'),
-    ('3', 'High'),
-    ]
-
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Tasks

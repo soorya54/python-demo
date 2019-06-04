@@ -20,7 +20,13 @@ class Tasks(models.Model):
 	title = models.CharField(max_length=200)
 	task_state = models.ForeignKey(TaskStateMaster, on_delete=models.CASCADE)
 	priority = models.ForeignKey(PriorityMaster, on_delete=models.CASCADE)
-	employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+	employee = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
 	created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
 	created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 	updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+class TaskStates(models.Model):
+	task = models.ForeignKey(Tasks, on_delete=models.CASCADE)
+	task_state = models.ForeignKey(TaskStateMaster, on_delete=models.CASCADE)
+	created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
+	created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)

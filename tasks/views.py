@@ -1,13 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import JsonResponse,HttpResponse
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework.test import APIClient
 from django.utils.safestring import mark_safe
 import json
-from .tasks import create_random_user_accounts
+from .tasks import create_tasks
 from .models import Tasks
 from .forms import TaskForm
+from django.core import serializers
 
 #code for websockets
 def index(request):
@@ -22,7 +23,15 @@ def room(request, room_name):
 
 @api_view(['GET', 'POST'])
 def list(request):
+	# tasks = serializers.serialize("json", Tasks.objects.all())
+	if request.user.is_staff:
+		tasks = Tasks.objects.all().filter(created_by_id=request.user.id).order_by('-created_at')
+	else:
+		tasks = Tasks.objects.filter(task_state_id=1).order_by('-priority_id', 'created_at').first()
+	print(tasks)
 	context = {"name":"soorya"}
+	context['is_manager'] = request.user.is_staff
+	context['tasks'] = tasks
 	return render(request, 'list.html', context)
 
 @api_view(['GET', 'POST'])
@@ -37,7 +46,8 @@ def store(request):
 		post_text = request.data
 		# post_text = request.POST.get('the_post')
 		response_data = {}
-		print(post_text['title'])
+		print(request.data)
+		create_tasks.delay(request.data, request.user.id)
 		# post = Tasks(title=post_text, created_by_id=request.user.id, )
 		# post.save()
 
@@ -48,10 +58,7 @@ def store(request):
 		# response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
 		# response_data['author'] = post.author.username
 
-		return HttpResponse(
-			json.dumps(response_data),
-			content_type="application/json"
-		)
+		return redirect('/tasks/')
 	else:
 		return HttpResponse(
 			json.dumps({"nothing to see": "this isn't happening"}),
@@ -62,7 +69,7 @@ def store(request):
 def sample_job(request):
 	data = request.data
 	print(data)
-	create_random_user_accounts.delay(data)
+	# create_random_user_accounts.delay(data)
 	result = {}
 	result['success'] = True
 	status=200
