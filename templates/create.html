@@ -1,0 +1,22 @@
+<!-- templates/registration/Create.html -->
+{% extends 'base.html' %}
+
+{% block title %}Create{% endblock %}
+
+{% block content %}
+<h2>Login</h2>
+<form action="/tasks/store" method="POST" id="post-form">
+  {% csrf_token %}
+  <div class="fieldWrapper" id="the_post">
+  		{{ form.title.label_tag }}
+        {{ form.title }}
+   </div>
+   <div class="fieldWrapper" id="the_post">
+        {{ form.priority.label_tag }}
+        {{ form.priority }}
+   </div>
+  <div id="results"></div> 
+  <button type="submit">Submit</button>
+</form>
+<!-- <script src="static/css/index.js"></script> -->
+{% endblock %}

@@ -1,0 +1,47 @@
+[
+  {
+    "model": "tasks.taskstatemaster",
+    "pk": 1,
+    "fields": {
+      "state": "New",
+      "created_at": "2019-06-03 06:46:36.893456+00:00",
+      "updated_at": "2019-06-03 06:46:36.893456+00:00"
+    }
+  },
+  {
+    "model": "tasks.taskstatemaster",
+    "pk": 2,
+    "fields": {
+      "state": "Accepted",
+      "created_at": "2019-06-03 06:46:36.893456+00:00",
+      "updated_at": "2019-06-03 06:46:36.893456+00:00"
+    }
+  },
+  {
+    "model": "tasks.taskstatemaster",
+    "pk": 3,
+    "fields": {
+      "state": "Completed",
+      "created_at": "2019-06-03 06:46:36.893456+00:00",
+      "updated_at": "2019-06-03 06:46:36.893456+00:00"
+    }
+  },
+  {
+    "model": "tasks.taskstatemaster",
+    "pk": 4,
+    "fields": {
+      "state": "Declined",
+      "created_at": "2019-06-03 06:46:36.893456+00:00",
+      "updated_at": "2019-06-03 06:46:36.893456+00:00"
+    }
+  },
+  {
+    "model": "tasks.taskstatemaster",
+    "pk": 5,
+    "fields": {
+      "state": "Cancelled",
+      "created_at": "2019-06-03 06:46:36.893456+00:00",
+      "updated_at": "2019-06-03 06:46:36.893456+00:00"
+    }
+  }
+]

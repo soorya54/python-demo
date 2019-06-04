@@ -1,10 +1,31 @@
 version: '3'
 
 services:
+  redis:
+    image: redis
+    restart: on-failure
+    hostname: redis
+    ports:
+     - "6379:6379"
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: urban_demo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/var/app
     ports:
       - "8000:8000"
+    links:
+      - db
+      - redis
+    depends_on:
+      - db
+      - redis
