@@ -23,12 +23,11 @@ def room(request, room_name):
 
 @api_view(['GET', 'POST'])
 def list(request):
-	# tasks = serializers.serialize("json", Tasks.objects.all())
 	if request.user.is_staff:
 		tasks = Tasks.objects.all().filter(created_by_id=request.user.id).order_by('-created_at')
 	else:
 		tasks = Tasks.objects.filter(task_state_id=1).order_by('-priority_id', 'created_at').first()
-	print(tasks)
+
 	context = {"name":"soorya"}
 	context['is_manager'] = request.user.is_staff
 	context['tasks'] = tasks
@@ -44,19 +43,11 @@ def create(request):
 def store(request):
 	if request.method == 'POST':
 		post_text = request.data
-		# post_text = request.POST.get('the_post')
 		response_data = {}
-		print(request.data)
 		create_tasks.delay(request.data, request.user.id)
-		# post = Tasks(title=post_text, created_by_id=request.user.id, )
-		# post.save()
 
 		response_data['result'] = 'Create post successful!'
 		response_data['status'] = True
-		# response_data['postpk'] = post.pk
-		# response_data['text'] = post.text
-		# response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
-		# response_data['author'] = post.author.username
 
 		return redirect('/tasks/')
 	else:
@@ -65,12 +56,3 @@ def store(request):
 			content_type="application/json"
 		)
 
-@api_view(['GET', 'POST'])
-def sample_job(request):
-	data = request.data
-	print(data)
-	# create_random_user_accounts.delay(data)
-	result = {}
-	result['success'] = True
-	status=200
-	return JsonResponse(result, status = status)
