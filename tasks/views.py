@@ -3,13 +3,22 @@ from django.http import JsonResponse,HttpResponse
 from django.urls import reverse
 from rest_framework.decorators import api_view
 from rest_framework.test import APIClient
+from django.utils.safestring import mark_safe
 import json
 from .tasks import create_random_user_accounts
 from .models import Tasks
 from .forms import TaskForm
 
+#code for websockets
 def index(request):
-    return HttpResponse("Hello, world. You're at the tasks index.")
+	return render(request, 'index.html', {})
+
+def room(request, room_name):
+	return render(request, 'room.html', {
+		'room_name_json': mark_safe(json.dumps(room_name))
+	})
+
+
 
 @api_view(['GET', 'POST'])
 def list(request):
