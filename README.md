@@ -1,5 +1,4 @@
 # python-demo
-=============
 
 ## Installation
 
@@ -21,7 +20,7 @@
 
 - Open bash of the web container
 
-		sudo docker exec <container-id> bash
+		sudo docker exec -it <container-id> bash
 
 - Create a super user
 		
