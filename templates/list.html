@@ -38,7 +38,7 @@
 				<ul class="list-group">
 					<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 						<div class="flex-column">
-							<a href="/tasks/{{task.id}}">{{ task.title }} </a> 
+							<a href="/tasks/{{task.id}}/view">{{ task.title }} </a> 
 							<p><small>{{task.task_state.state}}</small></p>
 							{% if task.priority_id == 1 %}
 								<span class="badge badge-secondary badge-pill"> {{task.priority}}</span>
@@ -52,7 +52,7 @@
 						</div>
 						<div class="flex-column">
 							{% if task.task_state_id != 3 and task.task_state_id != 5 %}
-								<a href="/tasks/cancel/{{task.id}}" id="cancel-api" onclick="return cancelFucntion();">Cancel</a>
+								<a href="/tasks/cancel/{{task.id}}" id="cancel-api" onclick="return wsFucntion();">Cancel</a>
 							{% endif %}
 						</div>
 					</div>
@@ -82,7 +82,8 @@
 					</div>
 					<div class="flex-column">
 						{% if tasks.task_state_id != 3 and tasks.task_state_id != 5 %}
-							<a href="#">Cancel</a>
+							<a href="/tasks/accept/{{tasks.id}}" style="padding: 10px" onclick="return wsFucntion();">Accept</a>
+							<a href="/tasks/reject/{{tasks.id}}">Reject</a>
 						{% endif %}
 					</div>
 				</div>
@@ -96,11 +97,11 @@
 
 	<script>
 
-	    var chatSocket = new WebSocket(
+	    var taskSocket = new WebSocket(
 	        'ws://' + window.location.host +
 	        '/ws/tasks/');
 
-	    chatSocket.onmessage = function(e) {
+	    taskSocket.onmessage = function(e) {
 	        // var data = JSON.parse(e.data);
 	        // var message = data['message'];
 	        // document.querySelector('#chat-log').value += (message + '\n');
@@ -108,7 +109,7 @@
 	        window.location.reload(true);
 	    };
 
-	    chatSocket.onclose = function(e) {
+	    taskSocket.onclose = function(e) {
 	        console.error('Chat socket closed unexpectedly');
 	    };
 
@@ -127,8 +128,8 @@
 			while(d2-d < ms);
 		}
 
-	    function cancelFucntion () {
-	        chatSocket.send(JSON.stringify({
+	    function wsFucntion () {
+	        taskSocket.send(JSON.stringify({
 	            'message': 'sample'
 	        }));
 	    }

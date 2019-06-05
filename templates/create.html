@@ -16,7 +16,24 @@
         {{ form.priority }}
    </div>
   <div id="results"></div> 
-  <button type="submit">Submit</button>
+  <button type="submit" onclick="return wsFucntion();">Submit</button>
 </form>
+<script>
+
+    var taskSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/tasks/');
+
+
+    taskSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    function wsFucntion () {
+        taskSocket.send(JSON.stringify({
+            'message': 'sample'
+        }));
+    }
+</script>
 <!-- <script src="static/css/index.js"></script> -->
 {% endblock %}
