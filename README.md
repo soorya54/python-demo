@@ -28,7 +28,7 @@
 
 - Seed the tables
 
-		python manage.py loaddata TasksPriority && python manage.py TasksState
+		python manage.py loaddata TasksPriority && python manage.py loaddata TasksState
 
 - Start the supervisor inside the container
 
