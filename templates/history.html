@@ -1,0 +1,102 @@
+<!-- templates/list.html -->
+{% extends 'base.html' %}
+
+{% block title %}List{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  	<nav class="navbar navbar-expand-sm bg-light">
+  		<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+	        <ul class="navbar-nav mr-auto">
+	            <li class="nav-item active">
+	                <p>Hi {{ user.username }}!	</a>
+	            </li>
+	        </ul>
+    	</div>
+	  	<!-- Links -->
+	  	<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/tasks">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'history' %}">Task History</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+				</li>
+			</ul>
+		</div>
+
+	</nav>
+	{% if tasks %}
+		{% for task in tasks %}
+			<ul class="list-group">
+				<div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+					<div class="flex-column">
+						<p>{{ task.title }} </p> 
+						<p><small>{{task.task_state.state}}</small></p>
+						{% if task.priority_id == 1 %}
+							<span class="badge badge-secondary badge-pill"> {{task.priority}}</span>
+						{% elif task.priority_id == 2 %}
+							<span class="badge badge-primary badge-pill"> {{task.priority}}</span>
+						{% elif task.priority_id == 3 %}
+							<span class="badge badge-danger badge-pill"> {{task.priority}}</span>
+						{% else %}
+							<span class="badge badge-info badge-pill"> {{task.priority}}</span>
+						{% endif %}
+					</div>
+					<div class="flex-column">
+						{% if task.task_state_id == 2 %}
+							<a href="/tasks/complete/{{task.id}}" style="padding: 10px">Completed</a>
+							<a href="/tasks/reject/{{task.id}}" onclick="return wsFucntion();">Decline</a>
+						{% endif %}
+					</div>
+				</div>
+			</ul>
+		{% endfor %}
+	{% else %}
+		<div style="text-align:center">
+			<p style="color:#808080">No data found</p>
+		</div>
+	{% endif %}
+
+	<script>
+
+	    var taskSocket = new WebSocket(
+	        'ws://' + window.location.host +
+	        '/ws/tasks/');
+
+	    taskSocket.onmessage = function(e) {
+	        // var data = JSON.parse(e.data);
+	        // var message = data['message'];
+	        // document.querySelector('#chat-log').value += (message + '\n');
+	        wait(2000);
+	        window.location.reload(true);
+	    };
+
+	    taskSocket.onclose = function(e) {
+	        console.error('Chat socket closed unexpectedly');
+	    };
+
+	    function wait(ms)
+		{
+			var d = new Date();
+			var d2 = null;
+			do { d2 = new Date(); }
+			while(d2-d < ms);
+		}
+
+	    function wsFucntion () {
+	        taskSocket.send(JSON.stringify({
+	            'message': 'sample'
+	        }));
+	    }
+
+	</script>
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}

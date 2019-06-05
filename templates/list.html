@@ -16,13 +16,16 @@
 	  	<!-- Links -->
 	  	<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
 			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/tasks">Home</a>
+				</li>
 				{% if is_manager %}
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'create' %}">Create Task</a>
 					</li>
 				{% else %}
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'create' %}">Task History</a>
+						<a class="nav-link" href="{% url 'history' %}">Task History</a>
 					</li>
 				{% endif %}
 				<li class="nav-item">
@@ -82,8 +85,10 @@
 					</div>
 					<div class="flex-column">
 						{% if tasks.task_state_id != 3 and tasks.task_state_id != 5 %}
-							<a href="/tasks/accept/{{tasks.id}}" style="padding: 10px" onclick="return wsFucntion();">Accept</a>
-							<a href="/tasks/reject/{{tasks.id}}">Reject</a>
+							{% if pending_count < 3 %}
+								<a href="/tasks/accept/{{tasks.id}}" style="padding: 10px" onclick="return wsFucntion();">Accept</a>
+							{% endif %}
+							<!-- <a href="/tasks/reject/{{tasks.id}}">Reject</a> -->
 						{% endif %}
 					</div>
 				</div>

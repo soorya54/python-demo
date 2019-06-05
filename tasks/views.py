@@ -22,17 +22,22 @@ def room(request, room_name):
 
 @api_view(['GET', 'POST'])
 def view_task(request, id):
-	context = {"name":"soorya"}
+	tasks = TaskStates.objects.all().filter(task_id=id).order_by('-created_at')
+	context = {}
+	context['tasks'] = tasks
 	return render(request, 'task.html', context)
 
 @api_view(['GET', 'POST'])
 def list(request):
+	context = {}
+
 	if request.user.is_staff:
 		tasks = Tasks.objects.all().filter(created_by_id=request.user.id).order_by('-created_at')
 	else:
 		tasks = Tasks.objects.filter(task_state_id=1).order_by('-priority_id', 'created_at').first()
 
-	context = {"name":"soorya"}
+		context['pending_count'] = Tasks.objects.filter(task_state_id=2, employee_id=request.user.id).count()
+
 	context['is_manager'] = request.user.is_staff
 	context['tasks'] = tasks
 	return render(request, 'list.html', context)
@@ -78,6 +83,22 @@ def accept(request, id):
 
 @api_view(['GET', 'POST'])
 def reject(request, id):
+	Tasks.objects.filter(pk=id).update(task_state_id=1, employee_id='')
 	task_state = TaskStates(task_id=id, task_state_id=4, created_by_id=request.user.id)
 	task_state.save()
-	return redirect('/tasks/')
+	return redirect('/tasks/history')
+
+@api_view(['GET', 'POST'])
+def complete(request, id):
+	Tasks.objects.filter(pk=id).update(task_state_id=3)
+	task_state = TaskStates(task_id=id, task_state_id=3, created_by_id=request.user.id)
+	task_state.save()
+	return redirect('/tasks/history')
+
+@api_view(['GET', 'POST'])
+def history(request):
+	tasks = Tasks.objects.all().filter(employee_id=request.user.id).order_by('-created_at')
+
+	context = {}
+	context['tasks'] = tasks
+	return render(request, 'history.html', context)

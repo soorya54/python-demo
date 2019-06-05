@@ -10,6 +10,8 @@ urlpatterns = [
     path('cancel/<id>', views.cancel, name='cancel'),
     path('accept/<id>', views.accept, name='accept'),
     path('reject/<id>', views.reject, name='reject'),
+    path('complete/<id>', views.complete, name='complete'),
+    path('history', views.history, name='history'),
     # url(r'^$', views.index, name='index'),
     # url(r'^(?P<room_name>[^/]+)/$', views.room, name='room'),
 ]
