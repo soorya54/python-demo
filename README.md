@@ -14,7 +14,7 @@
 
 		sudo docker-compose up -d
 
-- Create lod files
+- Create log files
 
 		touch logs/celery.log && touch logs/debug.log
 
