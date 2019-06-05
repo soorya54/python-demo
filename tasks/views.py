@@ -19,7 +19,11 @@ def room(request, room_name):
 		'room_name_json': mark_safe(json.dumps(room_name))
 	})
 
-
+@api_view(['GET', 'POST'])
+def view_task(request, id):
+	print(id)
+	context = {"name":"soorya"}
+	return render(request, 'task.html', context)
 
 @api_view(['GET', 'POST'])
 def list(request):
@@ -56,3 +60,7 @@ def store(request):
 			content_type="application/json"
 		)
 
+@api_view(['GET', 'POST'])
+def cancel(request, id):
+	Tasks.objects.filter(pk=id).update(task_state_id=5)
+	return redirect('/tasks/')

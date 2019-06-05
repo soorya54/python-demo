@@ -1,0 +1,36 @@
+<!-- templates/list.html -->
+{% extends 'base.html' %}
+
+{% block title %}List{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  	<nav class="navbar navbar-expand-sm bg-light">
+  		<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+	        <ul class="navbar-nav mr-auto">
+	            <li class="nav-item active">
+	                <p>Hi {{ user.username }}!	</a>
+	            </li>
+	        </ul>
+    	</div>
+	  	<!-- Links -->
+	  	<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'create' %}">Create Task</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+				</li>
+			</ul>
+		</div>
+
+	</nav>
+	<div style="text-align:center">
+		<p style="color:#808080">No data found</p>
+	</div>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}
